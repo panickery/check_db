@@ -27,6 +27,13 @@ class Conn_Info :
             self.jdbc_connection_string = self.jdbc_connection_string.replace('{host_ip}', sys_info.db_info.host_ip)
             self.jdbc_connection_string = self.jdbc_connection_string.replace('{port}', str(sys_info.db_info.port))
             self.jdbc_connection_string = self.jdbc_connection_string.replace('{database}', sys_info.db_info.database)
+            self.default_table_query = None
+            
+            if 'default_table_query' in config[sys_info.db_info.db_type] :
+                print('default_table_query exist!')
+                self.default_table_query = config[sys_info.db_info.db_type]['default_table_query'].replace('{user_id}', sys_info.db_info.user_id)
+            else :
+                print("default_table_query doesn't exist!")
 
             if self.jdbc_driver_class.upper().startswith('JAVA') : 
                 self.jdbc_driver_class = self.jdbc_driver_class[6:]
@@ -79,8 +86,6 @@ def execute_query(conn, query) :
 def check_ini(ini_section) : 
     sys.exit()
 
-
-
 # 시스템의 정보를 확인합니다.
 def system_check() : 
     try : 
@@ -121,6 +126,10 @@ def connect_db(sys_info) :
             conn_info.jdbc_connection_string,
             [sys_info.db_info.user_id, sys_info.db_info.user_pw],
             lib_path)
+
+        if conn_info.default_table_query :
+            execute_query(conn, conn_info.default_table_query)
+            print('TABLE PEEP QUERY :: {}'.format(conn_info.default_table_query))
 
         return conn
     
@@ -192,11 +201,16 @@ if __name__ == '__main__' :
             
         elif inp == 'help' or inp == '\h' :
             print('---------help---------')
-            print(' q for quit')
-            print(' query for query')
-            print(' show for show')
-            print(' help for help')
+            print('----- q for quit -----')
+            print('- query for query ----')
+            print('-- show for show -----')
+            print('-- help for help -----')
             print('----------------------')
             continue
+
+        # elif inp == 'show' :
+        #     print('I will show you the tables!')
+        #     table_query = 
+        #     df = execute_query(conn, query)
 
     print('END')
