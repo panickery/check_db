@@ -8,6 +8,7 @@ import numpy as np
 from pyreadline import Readline
 import configparser
 import platform
+from port_scan import port_scan
 
 # 서비스로 DB 구조 확인 하는 스크립트
 # 서비스명을 입력하면 쿼리를 날라고 구조를 명령어로 사용할수 있도록?
