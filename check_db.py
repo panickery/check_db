@@ -69,20 +69,25 @@ class Sys_Info :
             return False
     
 def execute_query(conn, query) : 
-    cur = conn.cursor()
-    cur.execute(query)
-    rows = cur.fetchall()
-    
-    columns = [desc[0].lower() for desc in cur.description]
-    print('가져온 컬럼 : {}'.format(columns))
-    df = pd.DataFrame(rows, columns=columns)
+    try :
+        cur = conn.cursor()
+        cur.execute(query)
+        rows = cur.fetchall()
+        
+        columns = [desc[0].lower() for desc in cur.description]
+        print('가져온 컬럼 : {}'.format(columns))
+        df = pd.DataFrame(rows, columns=columns)
 
-    print('결과 길이 :: {}'.format(len(rows)))
-    print(df)
-    cur.close()
-#    conn.close()
+        print('결과 길이 :: {}'.format(len(rows)))
+        print(df)
+        cur.close()
+    #    conn.close()
 
-    return df
+        return df
+    except Exception as e :
+        print('ERROR WHILE EXECUTING QUERY!!')
+        print(e)
+        return None
 
 def check_ini(ini_section) : 
     sys.exit()
@@ -189,16 +194,19 @@ if __name__ == '__main__' :
             query = input()
             if query == 'q' : 
                 continue
-            
             else :
                 print('''you enter query like this :: {} '''.format(query))
                 df = execute_query(conn, query)
-                print('date success')
-                if not df.empty :
+
+                # df를 if 문에서 비교할 때 df != None으로 비교할 경우 에러남.
+                if df :
                     continue  
                 else :
                     print('Wrong query or Not Select query!')
                     continue
+        if inp == 'show' :
+            print('developing')
+            continue
             
         elif inp == 'help' or inp == '\h' :
             print('---------help---------')
