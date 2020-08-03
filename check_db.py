@@ -156,11 +156,11 @@ if __name__ == '__main__' :
         print('No INI section!!')
         exit(0)
     
-    announce  = "line interpreter :: (quit for 'q', help for '\h' or 'help')"
+    announce  = ">> "
 
     while True :
-        print("Type INI section :: ")
-        ini_section = input()
+        # print()
+        ini_section = input("Type INI section :: ")
         
         if ini_section in sys_info.config_section : 
             if sys_info.get(ini_section) : 
@@ -181,30 +181,41 @@ if __name__ == '__main__' :
         print('연결이 성공했습니다.')
 
     while True :
-        print(announce)
-        inp = input()
+        inp = input(announce)
     
-        if inp == 'q' :
+        if inp == 'q' or inp == 'quit' :
             print("line interpreter end!")
             print('BYE!')
             break
         
-        if inp == 'query' : 
-            print("give me query! - only select :: (quit for 'q')")
-            query = input()
-            if query == 'q' : 
-                continue
-            else :
-                print('''you enter query like this :: {} '''.format(query))
-                df = execute_query(conn, query)
-
-                # df를 if 문에서 비교할 때 df != None으로 비교할 경우 에러남.
-                if df :
-                    continue  
-                else :
-                    print('Wrong query or Not Select query!')
+        elif inp == 'query' : 
+            query_end = False
+            while(not query_end) :
+                query = input("give me query! - only select :: (quit for 'q')\n>> ")
+                if query == 'q' : 
+                    query_end = not query_end
                     continue
-        if inp == 'show' :
+
+                elif query == '' :
+                    continue
+
+                else :
+                    print('''you entered query like this :: {} '''.format(query))
+                    df = execute_query(conn, query)
+
+                    # df를 if 문에서 비교할 때 df != None으로 비교할 경우 에러남.
+                    try :
+                        if df == None :
+                            print('Wrong query or Not Select query!')
+                            continue
+                        elif df.empty :
+                            continue  
+                    except Exception as e :
+                        print("query result error :: {}".format(e))
+                    finally :
+                        continue
+
+        elif inp == 'show' :
             print('developing')
             continue
             
@@ -215,6 +226,13 @@ if __name__ == '__main__' :
             print('-- show for show -----')
             print('-- help for help -----')
             print('----------------------')
+            continue
+
+        elif inp == '' :
+            continue
+            
+        else :
+            print('WRONG INPUT(help or \h For Help)')
             continue
 
         # elif inp == 'show' :
