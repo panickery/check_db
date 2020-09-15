@@ -5,6 +5,7 @@ import os
 import pandas as pd
 import numpy as np
 # from datetime import datetime, timedelta
+import time
 from pyreadline import Readline
 import configparser
 import platform
@@ -71,7 +72,9 @@ class Sys_Info :
 def execute_query(conn, query) : 
     try :
         cur = conn.cursor()
+        now = time.time()
         cur.execute(query)
+        print("걸린시간 :: {0:.3f}초".format(time.time()-now))
         rows = cur.fetchall()
         
         columns = [desc[0].lower() for desc in cur.description]
@@ -184,14 +187,14 @@ if __name__ == '__main__' :
         inp = input(announce)
     
         if inp == 'q' or inp == 'quit' :
-            print("line interpreter end!")
+            print("Line interpreter end!")
             print('BYE!')
             break
         
         elif inp == 'query' : 
             query_end = False
             while(not query_end) :
-                query = input("give me query! - only select :: (quit for 'q')\n>> ")
+                query = input("Give me query! - ONLY SELECT :: (quit for 'q')\n>> ")
                 if query == 'q' : 
                     query_end = not query_end
                     continue
@@ -200,7 +203,7 @@ if __name__ == '__main__' :
                     continue
 
                 else :
-                    print('''you entered query like this :: {} '''.format(query))
+                    print('''You entered query like this :: {} '''.format(query))
                     df = execute_query(conn, query)
 
                     # df를 if 문에서 비교할 때 df != None으로 비교할 경우 에러남.
@@ -211,20 +214,19 @@ if __name__ == '__main__' :
                         elif df.empty :
                             continue  
                     except Exception as e :
-                        print("query result error :: {}".format(e))
-                    finally :
+                        print("Query result error :: {}".format(e))
                         continue
 
         elif inp == 'show' :
-            print('developing')
+            print('Developing')
             continue
             
         elif inp == 'help' or inp == '\h' :
             print('---------help---------')
             print('----- q for quit -----')
-            print('- query for query ----')
-            print('-- show for show -----')
-            print('-- help for help -----')
+            print('- query for Query ----')
+            print('-- show for Show -----')
+            print('-- help for Help -----')
             print('----------------------')
             continue
 
