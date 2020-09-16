@@ -194,28 +194,16 @@ if __name__ == '__main__' :
         elif inp == 'query' : 
             query_end = False
             while(not query_end) :
-                query = input("Give me query! - ONLY SELECT :: (quit for 'q')\n>> ")
+                query = input("Give me query! - ONLY SELECT :: (quit for 'q')\nQUERY >> ")
                 if query == 'q' : 
                     query_end = not query_end
                     continue
 
-                elif query == '' :
-                    continue
-
-                else :
-                    print('''You entered query like this :: {} '''.format(query))
+                print('''You entered query like this :: {} '''.format(query))
+                if query[0:6].lower() == 'select' :
                     df = execute_query(conn, query)
-
-                    # df를 if 문에서 비교할 때 df != None으로 비교할 경우 에러남.
-                    try :
-                        if df == None :
-                            print('Wrong query or Not Select query!')
-                            continue
-                        elif df.empty :
-                            continue  
-                    except Exception as e :
-                        print("Query result error :: {}".format(e))
-                        continue
+                else :
+                    print("Query Something Wrong!!")
 
         elif inp == 'show' :
             print('Developing')
