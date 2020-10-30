@@ -11,6 +11,6 @@ check db with python
 # To Do
  - Pinging server
  - Data To CSV
- - ~~~Record Query time~~~
+ - ~~Record Query time
  
 
