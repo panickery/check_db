@@ -1,5 +1,5 @@
 # check_db
-check db with python
+Check DB with Python3
 
 # How To Use
 1. Install python3
