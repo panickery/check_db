@@ -209,7 +209,7 @@ if __name__ == '__main__' :
             print('Developing')
             continue
             
-        elif inp == 'help' or inp == '\h' :
+        elif inp == 'help' or inp == '\\h' :
             print('---------help---------')
             print('----- q for quit -----')
             print('- query for Query ----')
@@ -222,7 +222,7 @@ if __name__ == '__main__' :
             continue
             
         else :
-            print('WRONG INPUT(help or \h For Help)')
+            print('WRONG INPUT(help or \\h For Help)')
             continue
 
         # elif inp == 'show' :
